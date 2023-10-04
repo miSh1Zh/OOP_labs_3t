@@ -20,13 +20,12 @@ string num_2_string(int val){
 
 string trace_string(const string& s){
     
+    string res = "";
+
     int tmp = 0;
     bool changed = false;
 
-    string res = "";
-
     int i = 0, n = s.size();
-
     do{
         
         if(s[i] >= '0' and s[i] <= '9'){

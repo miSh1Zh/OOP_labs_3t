@@ -1,16 +1,15 @@
 #include "eleven.h"
 
 
-static int get_dec(const unsigned char t){
+static size_t get_dec(const unsigned char t){
     if(t<='9' and t>='0') return t-'0';
     return 10;
 }
 
-static unsigned char get_ch(int t){
+static unsigned char get_ch(size_t t){
     if(t%11 < 10) return t+'0';
     return 'a';
 }
-
 
 Eleven::Eleven() : _size(0), _array{nullptr}{}
 
@@ -84,33 +83,33 @@ Eleven::~Eleven() noexcept
     }
 }
 
-size_t Eleven::el_2_ten() noexcept
-{
-    size_t res = 0;
-    size_t pow = 1;
+// size_t Eleven::el_2_ten() noexcept
+// {
+//     size_t res = 0;
+//     size_t pow = 1;
 
-    for(size_t i{0}; i<_size; ++i){
-        res += get_dec(_array[i])*pow;
-        pow *= 11;
-    }
+//     for(size_t i{0}; i<_size; ++i){
+//         res += get_dec(_array[i])*pow;
+//         pow *= 11;
+//     }
     
-    return res;
-}
+//     return res;
+// }
 
-Eleven Eleven::ten_2_el(size_t num){
-    string res = "";
-    if(!num) res += '0';
-    while(num){
-        if(num % 11 < 10){
-            char tmp = num%11 + '0';
-            res = tmp + res;
-        }else{
-            res = 'a' + res;
-        }
-        num /= 11;
-    }
-    return Eleven{res};
-}
+// Eleven Eleven::ten_2_el(size_t num){
+//     string res = "";
+//     if(!num) res += '0';
+//     while(num){
+//         if(num % 11 < 10){
+//             char tmp = num%11 + '0';
+//             res = tmp + res;
+//         }else{
+//             res = 'a' + res;
+//         }
+//         num /= 11;
+//     }
+//     return Eleven{res};
+// }
 
 
 bool Eleven::equal(const Eleven &other) const
@@ -159,17 +158,70 @@ Eleven Eleven::assign(const Eleven& other){
 
 Eleven Eleven::add(const Eleven &other)
 {   
-    this->assign(ten_2_el(this->el_2_ten() + Eleven{other}.el_2_ten()));
+    size_t max_size = (this->greater(other))?_size:other._size;
+    size_t min_size = (this->less(other))?_size:other._size;
+
+    if(max_size == 0) throw logic_error("nothing to do");
+
+    size_t tmp {0}, rest {0};
+
+    Eleven res(max_size+1, '0'); 
+    
+    for(size_t i{0}; i < min_size; ++i){
+        tmp = rest + get_dec(_array[i]) + get_dec(other._array[i]);
+        rest = tmp / 11;
+        res._array[i] = get_ch(tmp%11);
+    }
+    for(size_t i{min_size}; i < max_size; ++i){
+        tmp = rest + get_dec((this->greater(other))?_array[i]:other._array[i]);
+        rest = tmp / 11;
+        res._array[i] = get_ch(tmp%11);
+    }
+    if(rest){
+        res._array[max_size] = rest;
+    }else{
+        --res._size;
+    }
+
+    this->assign(res);
+
     return *this;
 }
 
 Eleven Eleven::deduct(const Eleven &other)
 {
-    if(this->less(other)) throw logic_error("11-decimal number can't be negative (by task)");
-    else{
-        this->assign(ten_2_el(this->el_2_ten() - Eleven{other}.el_2_ten()));
+    if(this->less(other)){
+        throw logic_error("11-decimal number can't be negative (by task)");
+    }else{
+        int tmp {0}, rest {0};
+        for(size_t i{0}; i < other._size; ++i){
+            tmp = get_dec(_array[i]) - get_dec(other._array[i]) - rest;
+            if(tmp < 0){
+                rest = 1;
+                tmp = 11 + tmp;
+            }else{
+                rest = 0;
+            }
+            _array[i] = get_ch(tmp);
+        }
+        size_t i{other._size};
+        while(rest){
+            tmp = get_dec(_array[i]) - rest;
+            if(tmp < 0){
+                rest = 1;
+                tmp = 11 + tmp;
+            }else{
+                rest = 0;
+            }
+            _array[i] = get_ch(tmp); 
+            ++i;
+        }
+        i = _size - 1;
+        while(_array[i] == '0' and i > 0){
+            --_size;
+            --i;
+        }
     }
-
     return *this;
 }
 

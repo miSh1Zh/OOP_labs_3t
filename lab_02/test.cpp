@@ -3,7 +3,7 @@
 
 
 TEST(test_01, basic_test_set){
-    bool checked = false;
+    bool checked = false; //проверка на корректность вычитания (из меньшего нельзя вычесть большее)
     try{
         
         Eleven bf_great {"10232131aa327"};
@@ -19,7 +19,7 @@ TEST(test_01, basic_test_set){
 }
 
 TEST(test_02, basic_test_set){
-    Eleven bf_great {"12aa7"};
+    Eleven bf_great {"12aa7"}; //проверка на вычитание нуля
     Eleven bf_small {"0"};
 
     Eleven bf_copy {bf_great};
@@ -35,7 +35,7 @@ TEST(test_03, basic_test_set){
         
         Eleven bf_null {""};
 
-    }catch(exception &ex){
+    }catch(exception &ex){ //no number was given
         checked = true;
     }
 
@@ -61,13 +61,12 @@ TEST(test_05, basic_test_set){
     ASSERT_TRUE(checked);
 }
 
-TEST(test_06, basic_test_set){
-    Eleven bf_great {"1024"};
+TEST(test_06, basic_test_set){  //простая проверка сложения
+    Eleven bf_great {"1024"}; 
     Eleven bf_small {"12"};
     bf_great.add(bf_small);
     ASSERT_TRUE(bf_great.equal(Eleven{"1036"}));
 }
-
 
 int main(int argc, char **argv){
     testing::InitGoogleTest(&argc, argv);
