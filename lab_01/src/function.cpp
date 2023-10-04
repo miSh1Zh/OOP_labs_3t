@@ -40,11 +40,13 @@ string trace_string(const string& s){
             if(changed){
                 res += num_2_string(tmp) + '\n';
                 tmp = 0;
-                changed = false;
+                changed = false; 
             }
         }
 
-    }while(i++ < n);
+        ++i;
+
+    }while(i < n);
 
     return res;
 }
