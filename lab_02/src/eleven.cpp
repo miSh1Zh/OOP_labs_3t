@@ -17,10 +17,12 @@ Eleven::Eleven(const size_t &n, unsigned char t)
 {
     if(n == 0) throw logic_error("no number was given");
     if(not((t<='9' and t>='0') or t == 'a' or t == 'A')) throw logic_error("11-decimal number");
-    _array = new unsigned char[n];
-    for (size_t i = 0; i < n; ++i)
-        _array[i] = t;
-    _size = n;
+    else{
+        _array = new unsigned char[n];
+        for (size_t i = 0; i < n; ++i)
+            _array[i] = t;
+        _size = n;
+    }
 }
 
 Eleven::Eleven(const initializer_list<unsigned char> &t)
