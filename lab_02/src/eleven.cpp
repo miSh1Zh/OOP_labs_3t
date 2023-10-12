@@ -180,7 +180,7 @@ Eleven Eleven::add(const Eleven &other)
         res._array[i] = get_ch(tmp%11);
     }
     if(rest){
-        res._array[max_size] = rest;
+        res._array[max_size] = get_ch(rest);
     }else{
         --res._size;
     }

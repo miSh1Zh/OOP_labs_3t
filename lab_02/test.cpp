@@ -79,7 +79,11 @@ TEST(test_08, basic_test_set){ // ZERO COMPLEX test
     ASSERT_TRUE(!(Eleven(3, '0').add(Eleven{'0'}).deduct(Eleven{"0000000000"})).less(Eleven(1, '0')));
 }
 
-TEST(test_09, basic_test_set){ // Grand finality by testing long arithmetic (checked on paper!)
+TEST(test_09, basic_test_set){ // "result._size is more then max_size" test
+    ASSERT_TRUE((Eleven{"aa"}.add(Eleven{"1"})).equal(Eleven{"100"}));    
+}
+
+TEST(test_10, basic_test_set){ // Grand finality by testing long arithmetic (checked on paper!)
     ASSERT_TRUE(Eleven{"1000000000011001111000000aa"}.add(Eleven{"2"}).deduct(Eleven{"a1000000000000000"}).equal(Eleven{"aaaaaaaaa10100111100000101"}));    
 }
 
