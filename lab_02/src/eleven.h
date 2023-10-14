@@ -16,10 +16,10 @@ class Eleven
         Eleven(const Eleven& other);
         Eleven(Eleven&& other) noexcept;
 
-        // size_t el_2_ten() noexcept;
-        // Eleven ten_2_el(size_t num);
-        Eleven assign(const Eleven& other);
+        size_t get_size() const;
+        unsigned char *get_array_ptr() const;
 
+        Eleven assign(const Eleven& other);
         Eleven add(const Eleven& other);
         Eleven deduct(const Eleven& other);
         bool equal(const Eleven& other) const;
@@ -34,3 +34,4 @@ class Eleven
         unsigned char *_array;
 
 };
+

@@ -85,34 +85,13 @@ Eleven::~Eleven() noexcept
     }
 }
 
-// size_t Eleven::el_2_ten() noexcept
-// {
-//     size_t res = 0;
-//     size_t pow = 1;
+size_t Eleven::get_size() const{
+    return _size;
+}
 
-//     for(size_t i{0}; i<_size; ++i){
-//         res += get_dec(_array[i])*pow;
-//         pow *= 11;
-//     }
-    
-//     return res;
-// }
-
-// Eleven Eleven::ten_2_el(size_t num){
-//     string res = "";
-//     if(!num) res += '0';
-//     while(num){
-//         if(num % 11 < 10){
-//             char tmp = num%11 + '0';
-//             res = tmp + res;
-//         }else{
-//             res = 'a' + res;
-//         }
-//         num /= 11;
-//     }
-//     return Eleven{res};
-// }
-
+unsigned char *Eleven::get_array_ptr() const{
+    return _array;
+}
 
 bool Eleven::equal(const Eleven &other) const
 {

@@ -87,6 +87,22 @@ TEST(test_10, basic_test_set){ // Grand finality by testing long arithmetic (che
     ASSERT_TRUE(Eleven{"1000000000011001111000000aa"}.add(Eleven{"2"}).deduct(Eleven{"a1000000000000000"}).equal(Eleven{"aaaaaaaaa10100111100000101"}));    
 }
 
+TEST(test_11, basic_test_set){
+    Eleven bf {"121a"};
+    ASSERT_TRUE(bf.add(Eleven()).equal(bf));
+}
+
+TEST(test_12, basic_test_set){
+    Eleven bf1 {"121a"};
+    Eleven bf2 {"121a"};
+    ASSERT_TRUE(bf1.add(Eleven()).equal(bf2));
+}
+
+TEST(test_13, basic_test_set){
+    Eleven bf {"121a"};
+    ASSERT_TRUE(bf.greater(Eleven()));
+}
+
 int main(int argc, char **argv){
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
