@@ -51,13 +51,15 @@ int main(){
             }
         }
         if(option == 4){
-            
+            long double sum_area = 0;
             try{
                 for(size_t i = 0; i < arr->size(); ++i){
                     Point pt = Point((arr->array()[i])->geometrical_centre());
                     cout << i+1 << ") Geometrical center of figure is: " << "(" << pt.x_pnt << ", " << pt.y_pnt << ')' << "; ";
                     cout << "Area of figure is: " << *(arr->array()[i]) << endl;
+                    sum_area += static_cast<double>(*(arr->array()[i]));
                 }
+                cout << "Sum area of all figures in array is " << sum_area << endl;
             }catch(exception &ex){
                 cerr << "Exception in calculating: " << ex.what() << endl;
             }
