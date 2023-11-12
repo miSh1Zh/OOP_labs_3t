@@ -66,7 +66,7 @@ class Triangle : public Figure<T>
         }
         virtual inline istream& operator>>(istream& is) override
         {
-            point first, second, third, fourth;
+            point first, second, third;
             cout << "Please type in coordinates of points in Triangle(Ex: <x_val> <y_val>):";
             cout << "\nPoint 1: "; is >> first.first >> first.second;
             cout << "Point 2: "; is >> second.first >> second.second;

@@ -17,4 +17,5 @@ class Figure
         virtual operator double() const = 0;
         virtual inline ostream& operator<<(ostream& os) const = 0;
         virtual inline istream& operator>>(istream& is) = 0;
+        virtual ~Figure() = default;
 };
