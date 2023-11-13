@@ -100,9 +100,11 @@ class Triangle : public Figure<T>
             pnt1.second = fig.pnt1.second;
             pnt2.second = fig.pnt2.second;
             pnt3.second = fig.pnt3.second;
+
+            side = fig.side;
         }
         bool operator==(const Triangle<T>& other) const
         {
-            return static_cast<double>(*this) == static_cast<double>(other);
+            return round(static_cast<double>(*this)) == round(static_cast<double>(other));
         }
 };

@@ -109,9 +109,11 @@ class Square : public Figure<T>
             pnt2.second = fig.pnt2.second;
             pnt3.second = fig.pnt3.second;
             pnt4.second = fig.pnt4.second;
+
+            side = fig.side;
         }
         bool operator==(const Square<T>& other) const
         {
-            return static_cast<double>(*this) == static_cast<double>(other);
+            return round(static_cast<double>(*this)) == round(static_cast<double>(other));
         }
 };

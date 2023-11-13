@@ -112,9 +112,12 @@ class Rectangle : public Figure<T>
             pnt2.second = fig.pnt2.second;
             pnt3.second = fig.pnt3.second;
             pnt4.second = fig.pnt4.second;
+
+            side1 = fig.side1;
+            side2 = fig.side2;
         }
         bool operator==(const Rectangle<T>& other) const
         {
-            return static_cast<double>(*this) == static_cast<double>(other);
+            return round(static_cast<double>(*this)) == round(static_cast<double>(other));
         }
 };

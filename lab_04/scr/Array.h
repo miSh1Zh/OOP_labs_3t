@@ -5,7 +5,7 @@
 
 #include <memory>
 #include <vector>
-// //#include </usr/local/Cellar/gcc/13.2.0/include/c++/13/concepts>
+// #include <concepts>
 // // #include <type_traits>
 
 template <typename T>
@@ -21,7 +21,7 @@ class Array
 
         Array() : _size(0), _array(nullptr){}
         Array(const initializer_list<T>& list){
-            shared_ptr<T[]> new_array = make_shared<T[]>(list.size());
+            shared_ptr<T[]> new_array = shared_ptr<T[]>(new T[list.size()]);
             size_t i{0};
             for(auto& elem : list){
                 new_array[i] = elem;
@@ -34,7 +34,7 @@ class Array
         }
         void push_back(T elem){
             size_t new_size = _size+1;
-            shared_ptr<T[]> new_array = make_shared<T[]>(new_size);
+            shared_ptr<T[]> new_array = shared_ptr<T[]>(new T[new_size]);
             for(size_t i{0}; i < _size; ++i){
                 new_array[i] = _array[i];
             }
@@ -54,7 +54,7 @@ class Array
             }
             else{
                 size_t new_size = _size-1;
-                shared_ptr<T[]> new_array = make_shared<T[]>(new_size);
+                shared_ptr<T[]> new_array = shared_ptr<T[]>(new T[new_size]);
                 for(size_t i{0}; i < ind; ++i){
                     new_array[i] = _array[i];
                 }
@@ -83,13 +83,7 @@ class Array
             return fig;
         }
 
-        ~Array(){
-            if(_size > 0){
-                _size = 0;
-                delete[] _array;
-                _array = nullptr;
-            }
-        }
+        ~Array() = default;
 };
 
 
