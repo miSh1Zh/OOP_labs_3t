@@ -7,7 +7,7 @@ using int_point = pair<int, int>;
 
 int main(){
     
-    my_Array<shared_ptr<Figure<double>>> arr;
+    Array<shared_ptr<Figure<double>>> arr;
     cout << "To interact with programm, type number of the desired option:\n1) add to Array\n2) remove by index\n3) print array\n4) print geometric center and area of all figures\n5) quit\n";
     
     size_t option = 0;
