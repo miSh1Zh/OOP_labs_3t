@@ -1,5 +1,0 @@
-/Users/mishazhadnov/Desktop/wD/OOP_labs/lab_01/build/CMakeFiles/prog.dir
-/Users/mishazhadnov/Desktop/wD/OOP_labs/lab_01/build/CMakeFiles/tests.dir
-/Users/mishazhadnov/Desktop/wD/OOP_labs/lab_01/build/CMakeFiles/test.dir
-/Users/mishazhadnov/Desktop/wD/OOP_labs/lab_01/build/CMakeFiles/edit_cache.dir
-/Users/mishazhadnov/Desktop/wD/OOP_labs/lab_01/build/CMakeFiles/rebuild_cache.dir

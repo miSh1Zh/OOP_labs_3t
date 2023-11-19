@@ -1,1 +1,0 @@
-/Library/Developer/CommandLineTools/usr/bin/c++  -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/prog.dir/Users/mishazhadnov/Desktop/wD/OOP_labs/lab_01/main.cpp.o CMakeFiles/prog.dir/Users/mishazhadnov/Desktop/wD/OOP_labs/lab_01/src/function.cpp.o -o prog 
