@@ -4,10 +4,12 @@
 #include "Rectangle.h"
 
 #include <memory>
-#include <vector>
-#include <array>
+#include <concepts>
 
 template <typename T>
+
+// concept Arrayable = is_default_constructible<T>::val || is_pointer<T>::val;
+// template <Arrayable T>
 
 class Array
 {
@@ -82,10 +84,20 @@ class Array
             return fig;
         }
 
+        // ~Array(){
+        //     if(_size > 0){
+        //         for(size_t i{0}; i<_size; ++i){
+        //             delete _array[i];
+        //         }
+        //         _array = nullptr;
+        //         _size = 0;
+        //     }
+        // }
         ~Array() = default;
 };
 
 
+// #include <vector>
 // template <typename T>
 // class my_Array
 // {

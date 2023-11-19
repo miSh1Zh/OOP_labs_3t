@@ -1,7 +1,7 @@
 #include "Figure.h"
 #pragma once 
 
-template <typename T>
+template <Countable T>
 
 class Square : public Figure<T>
 {

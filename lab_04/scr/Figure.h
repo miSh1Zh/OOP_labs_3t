@@ -7,6 +7,10 @@ using namespace std;
 
 template <typename T>
 
+concept Countable = is_arithmetic_v<T>;
+
+template <Countable T>
+
 
 class Figure
 {

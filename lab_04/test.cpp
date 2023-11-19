@@ -52,7 +52,6 @@ TEST(test_08, default_constructor_is_assigned_test){
         
     ASSERT_TRUE(fig1.side == 0);
 }
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 TEST(test_09, int_sq_area_and_center_test){
     Square<int> fig(int_point(4, 4), int_point(0, 4), int_point(0, 8), int_point(4, 8));

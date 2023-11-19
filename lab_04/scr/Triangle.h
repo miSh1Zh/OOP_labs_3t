@@ -2,7 +2,7 @@
 #pragma once
 
 
-template <typename T>
+template <Countable T>
 
 class Triangle : public Figure<T>
 {
