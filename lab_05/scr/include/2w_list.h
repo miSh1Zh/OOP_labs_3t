@@ -53,22 +53,15 @@ class List{
                     }
                 }
                 bool operator!=(const Iterator & iter_oth){
-                    return iter_oth._cur_node->_data != this->_cur_node->_data;
+                    return &iter_oth._cur_node->_data != &this->_cur_node->_data;
                 }
 
                 bool operator==(const Iterator & iter_oth){
-                    return not(iter_oth != *this);
+                    return &iter_oth._cur_node->_data == &this->_cur_node->_data;
                 }
 
-                bool operator==(const T& oth){
-                    return _cur_node->_data == oth;
-                }
-                bool operator!=(const T& oth){
-                    return _cur_node->_data != oth;
-                }
-
-                Node& operator*(){
-                    return *_cur_node;
+                T& operator*(){
+                    return _cur_node->_data;
                 }
 
                 friend std::ostream & operator << (std::ostream & out, const Iterator & it) {
@@ -78,7 +71,9 @@ class List{
             // private:
                 Node* _cur_node;
         };
+
         List() : _finish_node(), _start_node(){}
+
         void erase(Iterator it){
             if(it._cur_node){
                 if(it._cur_node == _start_node){
@@ -87,21 +82,20 @@ class List{
                 if(it._cur_node == _finish_node){
                     _finish_node = _finish_node->_prev;
                 }
+
                 if(it._cur_node->_next and it._cur_node->_prev){
-                    it._cur_node->_next->_prev = it._cur_node->_prev;
                     it._cur_node->_prev->_next = it._cur_node->_next;
+                    it._cur_node->_next->_prev = it._cur_node->_prev;
                 }
                 else if(it._cur_node->_next){
                     it._cur_node->_next->_prev = nullptr;
                 }
-                else{
+                else if(it._cur_node->_prev){
                     it._cur_node->_prev->_next = nullptr;
                 }
                 erase_l.erase_elem.deallocate(it._cur_node, 1);
-            }
-            else{
-                throw std::logic_error("No elem!");
-            }
+                // std::cout << "here\n";
+            }else throw std::logic_error("No elem!");
         }
         void emplace(Iterator it, T val){
             if(it._cur_node){
@@ -148,11 +142,12 @@ class List{
         }
         size_t size(){
             size_t _size{0};
-            Node* position = _start_node;
-            while(position){
-                _size++;
-                position = position->_next;
-                if(!position) --_size;
+            if(_start_node){
+                Node* position = _start_node;
+                while(position){
+                    _size++;
+                    position = position->_next;
+                }
             }
             return _size;
         }
@@ -160,7 +155,7 @@ class List{
             return Iterator(_start_node);
         }
         Iterator end(){
-            return Iterator(_finish_node);
+            return Iterator(nullptr);
         }
     private:
         Node* _finish_node;

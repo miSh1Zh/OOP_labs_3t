@@ -25,19 +25,19 @@ unsigned long long int factorial(int n) {
 int main()
 {
     try{
-        std::map<int, int, std::less<int>, Allocator<std::pair<const int,int>>> my_map;
-        int res = 1;
-        for (size_t i = 0; i < 5; ++i) {
-            res = 1;
-            for (size_t j = 1; j <= i; ++j) {
-            res *= j;
-            }
-            my_map[i] = res;
-        }
+        // std::map<int, int, std::less<int>, Allocator<std::pair<const int,int>>> my_map;
+        // int res = 1;
+        // for (size_t i = 0; i < 5; ++i) {
+        //     res = 1;
+        //     for (size_t j = 1; j <= i; ++j) {
+        //     res *= j;
+        //     }
+        //     my_map[i] = res;
+        // }
 
-        for(const auto& [k,v]: my_map) {
-            cout << k << " -> " << v << endl;
-        } 
+        // for(const auto& [k,v]: my_map) {
+        //     cout << k << " -> " << v << endl;
+        // } 
 
         cout << "List test\n";
 

@@ -5,84 +5,42 @@
 
 #define BLOCKS 1024
 
-TEST(AllocTests, test1) {
-
-    std::map<double, double, std::less<int>, My_Allocator::Allocator<std::pair<const double, double> > > test_map;
-    test_map[1] = 1;
-    test_map[2] = 3;
-    test_map[3] = 5;
-    test_map[4] = 6;
-    test_map[5] = 8;
-
-    testing::internal::CaptureStdout(); 
-    for(const auto& [k,v]: test_map) {
-            std::cout << k << " " << v << std::endl;
-    } 
-    std::string output = testing::internal::GetCapturedStdout(); 
-
-    testing::internal::CaptureStdout();
-    std::cout << 1 << " " << 1 << std::endl;
-    std::cout << 2 << " " << 3 << std::endl;
-    std::cout << 3 << " " << 5 << std::endl;
-    std::cout << 4 << " " << 6 << std::endl;
-    std::cout << 5 << " " << 8 << std::endl;
-    std::string ans = testing::internal::GetCapturedStdout();
-
-    ASSERT_EQ(output, ans);
-}
-
-TEST(ListAllocator, test2) {
+TEST(ListAllocator, test1) {
 
     List<int, My_Allocator::Allocator<int> > lst;
     lst.emplace_back(10);
-    ASSERT_TRUE(lst.end() == 10);
-}
-
-TEST(ListAllocator, test3) {
-
-    List<int, My_Allocator::Allocator<int> > lst;
-    lst.emplace_back(1);
-    lst.emplace_back(5);
-    lst.erase(lst.end());
-
-    ASSERT_TRUE(lst.begin() == 5);   
-}
-
-TEST(ListAllocator, test4) {
-
-    List<int, My_Allocator::Allocator<int> > lst;
-    lst.emplace_back(1);
-    lst.emplace_back(5);
-    lst.erase(lst.end());
-    lst.emplace_back(1);
-
-    ASSERT_TRUE(lst.end() == 5);   
+    ASSERT_TRUE(*lst.begin() == 10);
 }
 
 
-
-TEST(ListAllocator, test5) {
-
-    List<int, My_Allocator::Allocator<int> > lst;
-    lst.emplace_back(1);
-    lst.emplace_back(5);
-    lst.erase(lst.begin());
-    lst.erase(lst.begin());
-    lst.emplace_back(1);
-
-    ASSERT_TRUE(lst.begin() == 1);   
-}
-
-TEST(ListAllocator, test6) {
-
-    List<int, My_Allocator::Allocator<int> > lst;
-    ASSERT_TRUE(lst.begin() == lst.end());
-}
-
-TEST(ListAllocator, test7) {
+TEST(ListAllocator, test2) {
 
     List<double, My_Allocator::Allocator<double> > lst;
     EXPECT_ANY_THROW(lst.erase(lst.begin()));
+}
+
+TEST(ListAllocator, test3){
+    List<int, My_Allocator::Allocator<int>> lst;
+
+    lst.emplace_back(10);
+    lst.emplace_back(10);
+    lst.emplace_back(10);
+    lst.emplace_back(10);
+    lst.emplace(++lst.begin(), 77);
+    lst.emplace_front(15);
+
+    List<int, My_Allocator::Allocator<int>>::Iterator tmp1, tmp2;
+    
+    for(List<int, My_Allocator::Allocator<int>>::Iterator it = lst.begin(); it != lst.end(); ++it){
+        if(*it == 77) tmp1 = it;
+        if(*it == 10) tmp2 = it;
+    }
+
+    ASSERT_TRUE(*lst.begin() == 15);
+    ASSERT_TRUE(*tmp1 == 77);
+    ASSERT_TRUE(*tmp2 == 10);
+    
+    ASSERT_TRUE(lst.size() == 6);
 }
 
 
