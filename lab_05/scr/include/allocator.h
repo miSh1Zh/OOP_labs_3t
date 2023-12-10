@@ -7,71 +7,77 @@
 
 using std::deque;
 
-namespace My_Allocator {
-    template <class T, size_t SIZE_B = 50000>
-    class Allocator {
-    public:
-        static constexpr size_t max_count = SIZE_B;
-        using value_type = T;
-        using pointer = T *;
-        using const_pointer = const T *;
-
-        Allocator() {   
-            _used_blocks.resize(max_count);
-            _free_blocks.resize(max_count);
-            for (size_t i = 0; i < max_count; i++) {
-                _free_blocks[i] = &_used_blocks[i];
+namespace new_Allocator{
+    template <class T, size_t BLOCK_SIZE = 50000>
+    class Allocator{
+        public:
+            static constexpr size_t max_count = BLOCK_SIZE;
+            using value_type = T;
+            using pointer = T *;
+            using const_pointer = const T *;
+            Allocator(){
+                _used_blocks.resize(max_count);
+                // std::cout << "Start\n";
+                for(size_t i{0}; i < max_count; i++){
+                    _free_blocks.push_back(&(_used_blocks[i]));
+                }
+                _free_count = max_count;
             }
-            _free_count = max_count;
-        }
-
-        ~Allocator() {
-        #ifdef DEBUG
-            if (_free_count < max_count)
-                std::cout << "allocator: Memory leak?" << std::endl;
-            else
-                std::cout << "allocator: Memory freed" << std::endl;
-        #endif
-        }
-
-        template <class U>
-        struct rebind {
-            using other = Allocator<U>;
-        };
-
-        T *allocate(size_t n) {
-            T *result = nullptr;
-            if (_free_count > 0) {
-                result = (pointer)_free_blocks[--_free_count];
+            ~Allocator(){
+                if(_free_count < max_count){
+                    std::cerr << "deallocate all blocks first\n"; 
+                }
+                _used_blocks.clear();
             }
-            else {
-                throw std::logic_error("allocator: No memory exception :-)");
+            template <class U>
+            struct rebind {
+                using other = Allocator<U>;
+            };
+            pointer allocate(size_t n = 1){
+                pointer result = nullptr;
+                if(_free_count > 0){
+                    // std::cout << "Dobby get on work\n";
+                    result = _free_blocks.front();
+                    _free_blocks.pop_front();
+                    _free_count--;
+                }
+                else throw std::bad_alloc();
+                return result;
             }
-            return result;
-        }
-
-        void deallocate(pointer pnt, size_t) {
-#ifdef DEBUG
-            std::cout << "allocator: Deallocate block " << std::endl;
-#endif      
-            if (_free_count + 1 >= max_count) {
-                return; 
+            void deallocate(pointer dobby, size_t n = 1) noexcept{
+                if(_free_count < max_count){
+                    // std::cout << "Dobby is free\n"
+                    _free_blocks.push_back(dobby);
+                    _free_count++; 
+                }else{
+                    std::cerr << "problem with adresses\n";
+                }
             }
-            _free_blocks[_free_count++] = pnt;
-        }
-        template <typename U, typename... Args>
-        void construct(U *p, Args &&...args) {
-            new (p) U(std::forward<Args>(args)...);
-        }
+            template <typename U, typename... Args>
+            void construct(U* p, Args &&...args) {
+                pointer _start = &_used_blocks.front();
+                pointer _end = &_used_blocks.back();
+                if((pointer)p < _start or (pointer)p > _end){
+                    throw std::invalid_argument("constructor error: invalid pointer (no access)\n");
+                }else{
+                    for(auto elem : _free_blocks){
+                        if(elem == (pointer)p){
+                            throw std::invalid_argument("constructor error: invalid pointer (already free)\n");
+                        }
+                    }
+                    new (p) U(std::forward<Args>(args)...);
+                }
 
-        void destroy(pointer p) {
-            p->~T();
-        }
+            }
+            void destroy(pointer p) {
+                p->~T();
+            }
+
         private:
-        deque<value_type> _used_blocks;
-        deque<pointer> _free_blocks;
-        size_t _free_count;
-    }; 
+            size_t _free_count;
+            deque<value_type> _used_blocks;
+            deque<pointer> _free_blocks;
+    };
 
     template <class T, class U>
     constexpr bool operator==(const Allocator<T> &lhs, const Allocator<U> &rhs) {
@@ -82,4 +88,4 @@ namespace My_Allocator {
     constexpr bool operator!=(const Allocator<T> &lhs, const Allocator<U> &rhs) {
         return not(lhs == rhs);
     }
-}
+};

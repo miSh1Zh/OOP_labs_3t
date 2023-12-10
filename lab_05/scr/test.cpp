@@ -5,9 +5,11 @@
 
 #define BLOCKS 1024
 
+using namespace new_Allocator;
+
 TEST(ListAllocator, test1) {
 
-    List<int, My_Allocator::Allocator<int> > lst;
+    List<int, Allocator<int> > lst;
     lst.emplace_back(10);
     ASSERT_TRUE(*lst.begin() == 10);
 }
@@ -15,23 +17,23 @@ TEST(ListAllocator, test1) {
 
 TEST(ListAllocator, test2) {
 
-    List<double, My_Allocator::Allocator<double> > lst;
+    List<double, Allocator<double> > lst;
     EXPECT_ANY_THROW(lst.erase(lst.begin()));
 }
 
 TEST(ListAllocator, test3){
-    List<int, My_Allocator::Allocator<int>> lst;
+    List<int, Allocator<int>> lst;
 
     lst.emplace_back(10);
     lst.emplace_back(10);
     lst.emplace_back(10);
     lst.emplace_back(10);
-    lst.emplace(++lst.begin(), 77);
+    lst.emplace(++lst.begin(), 77); 
     lst.emplace_front(15);
 
-    List<int, My_Allocator::Allocator<int>>::Iterator tmp1, tmp2;
+    List<int, Allocator<int>>::Iterator tmp1, tmp2;
     
-    for(List<int, My_Allocator::Allocator<int>>::Iterator it = lst.begin(); it != lst.end(); ++it){
+    for(List<int, Allocator<int>>::Iterator it = lst.begin(); it != lst.end(); ++it){
         if(*it == 77) tmp1 = it;
         if(*it == 10) tmp2 = it;
     }

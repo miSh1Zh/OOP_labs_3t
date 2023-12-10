@@ -4,7 +4,7 @@
 #include "include/allocator.h"
 #include "include/2w_list.h"
 
-using namespace My_Allocator;
+using namespace new_Allocator;
 using std::cin;
 using std::cout;
 using std::cerr;
@@ -55,26 +55,33 @@ int main()
 
         cout << "test iterator and emplace by iterator\n";
 
+        List<int, Allocator<int>>::Iterator spec;
+
         for(List<int, Allocator<int>>::Iterator it = lst.begin(); it != lst.end(); ++it){
             cout << i++ << " -> " << *it << endl;
             if(i == 2){
-                lst.emplace(it, 77);
+                spec = it;
             }
         }
 
-        cout << "list after emplace to list to second position\n";
+        lst.emplace(spec, 77);
 
+        cout << "list after emplace to it on i = 1\n";
+ 
         i = 0;
-
         cout << "Size: " << lst.size() << endl;
 
         for(List<int, Allocator<int>>::Iterator it = lst.begin(); it != lst.end(); ++it){
             cout << i++ << " -> " << *it << endl;
         }
 
+        i = 0;
         cout << "Clean list\n";
 
-        while(lst.size() > 0){
+        lst.erase(spec); cout << "Delete special (2nd) element\n"; 
+
+        while(!lst.empty()){
+            cout << i++ << " -> " << lst.begin() << endl;
             lst.erase(lst.begin());
         }
 

@@ -1,10 +1,12 @@
 #pragma once
 
 #include <iostream>
-
+ 
 template <class T, class Allocator, int BLOCK_COUNT = 100>
 class List{
     public:
+
+
         struct Node;
         using alloc = typename Allocator::template rebind<Node>::other;
         struct Node{
@@ -21,6 +23,8 @@ class List{
                 return &lhs._data == &rhs._data;
             }
         };
+
+
         struct eraser {
             alloc erase_elem;
 
@@ -31,8 +35,14 @@ class List{
                 erase_elem.deallocate((Node*)ptr, 1);
             }
         };
+
+
         class Iterator{
             public:
+                
+                using difference_type = std::ptrdiff_t;
+                using iterator_categoty = std::forward_iterator_tag;
+                
                 Iterator() : _cur_node(nullptr){}
                 Iterator(Node* other) : _cur_node(other){}
                 
@@ -60,6 +70,10 @@ class List{
                     return &iter_oth._cur_node->_data == &this->_cur_node->_data;
                 }
 
+                void operator=(const Iterator & iter_oth){
+                    _cur_node = iter_oth._cur_node;
+                }
+
                 T& operator*(){
                     return _cur_node->_data;
                 }
@@ -72,8 +86,8 @@ class List{
                 Node* _cur_node;
         };
 
-        List() : _finish_node(), _start_node(){}
 
+        List() : _finish_node(nullptr), _start_node(nullptr){}
         void erase(Iterator it){
             if(it._cur_node){
                 if(it._cur_node == _start_node){
@@ -94,7 +108,7 @@ class List{
                     it._cur_node->_prev->_next = nullptr;
                 }
                 erase_l.erase_elem.deallocate(it._cur_node, 1);
-                // std::cout << "here\n";
+            
             }else throw std::logic_error("No elem!");
         }
         void emplace(Iterator it, T val){
@@ -102,9 +116,10 @@ class List{
                 Node* new_elem = erase_l.erase_elem.allocate(sizeof(Node));
                 erase_l.erase_elem.construct(new_elem, val);
                 Node* new_element(new_elem);
+
                 new_element->_prev = it._cur_node->_prev;
                 new_element->_next = it._cur_node;
-                it._cur_node->_prev->_next = new_element;
+                if (it._cur_node->_prev) it._cur_node->_prev->_next = new_element;
                 it._cur_node->_prev = new_element;
             }else{
                 throw std::logic_error("No place to emplace!");
@@ -151,15 +166,29 @@ class List{
             }
             return _size;
         }
-        Iterator begin(){
+        Iterator begin() const {
             return Iterator(_start_node);
         }
-        Iterator end(){
-            return Iterator(nullptr);
+        Iterator end() const {
+            return Iterator(_finish_node->_next);
+        }
+        Iterator rbegin(){
+            return Iterator(_finish_node);
+        }
+        Iterator rend(){
+            return Iterator(_start_node->_prev);
+        }
+        bool empty() const {
+            return (_start_node == nullptr);
+        }
+        T front() const {
+            return _start_node->_data;
+        }
+        T back() const {
+            return _finish_node->_data;
         }
     private:
         Node* _finish_node;
         Node* _start_node;
         eraser erase_l;
-
 };
