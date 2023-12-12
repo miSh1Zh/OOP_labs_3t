@@ -45,7 +45,19 @@ namespace new_Allocator{
                 return result;
             }
             void deallocate(pointer dobby, size_t n = 1) noexcept{
-                if(_free_count < max_count){
+                bool check = false;
+                pointer _start = &_used_blocks.front();
+                pointer _end = &_used_blocks.back();
+                if((pointer)dobby >= _start and (pointer)dobby <= _end){
+                    for(auto elem : _free_blocks){
+                        if((pointer)dobby == elem){
+                            std::cerr << "already free\n";
+                            return;
+                        }
+                    }
+                    check = true;
+                }
+                if(_free_count < max_count and check){
                     // std::cout << "Dobby is free\n"
                     _free_blocks.push_back(dobby);
                     _free_count++; 
