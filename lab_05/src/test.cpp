@@ -12,8 +12,8 @@ TEST(ListAllocator, test1) {
     List<int, Allocator<int> > lst;
     lst.emplace_back(10);
     ASSERT_TRUE(*lst.begin() == 10);
+    lst.clear();
 }
-
 
 TEST(ListAllocator, test2) {
 
@@ -21,7 +21,18 @@ TEST(ListAllocator, test2) {
     EXPECT_ANY_THROW(lst.erase(lst.begin()));
 }
 
-TEST(ListAllocator, test3){
+TEST(ListAllocator, test3) {
+
+    List<double, Allocator<double>> lst;
+    
+    lst.emplace_front(0);
+    
+    ASSERT_TRUE(lst.rbegin() == lst.begin());
+    
+    lst.clear();
+}
+
+TEST(ListIterator, test1) {
     List<int, Allocator<int>> lst;
 
     lst.emplace_back(10);
@@ -41,13 +52,30 @@ TEST(ListAllocator, test3){
     ASSERT_TRUE(*lst.begin() == 15);
     ASSERT_TRUE(*tmp1 == 77);
     ASSERT_TRUE(*tmp2 == 10);
-    
     ASSERT_TRUE(lst.size() == 6);
+
+    lst.clear();
 }
 
+TEST(ListIterator, test2) {
 
+    List<std::string, Allocator<std::string>> lst;
+    
+    lst.emplace_front("Hey!\n");
+    lst.emplace_back("Nice to meet you!\n");
+    lst.emplace(lst.rbegin(), "My name is [...]\n");
+    
+    std::string res = "";
+    for(auto elem : lst){
+        res+=elem;
+    }
 
-auto main(int argc, char** argv) -> int {
+    ASSERT_TRUE(res=="Hey!\nMy name is [...]\nNice to meet you!\n");
+
+    lst.clear();
+}
+
+int main(int argc, char** argv) {
 
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();

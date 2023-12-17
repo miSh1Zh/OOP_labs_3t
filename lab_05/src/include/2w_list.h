@@ -187,6 +187,11 @@ class List{
         T back() const {
             return _finish_node->_data;
         }
+        void clear() noexcept {
+            while(!this->empty()){
+                this->erase(this->begin());
+            }
+        }
     private:
         Node* _finish_node;
         Node* _start_node;

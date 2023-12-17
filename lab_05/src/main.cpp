@@ -80,10 +80,12 @@ int main()
 
         lst.erase(spec); cout << "Delete special (2nd) element\n"; 
 
-        while(!lst.empty()){
-            cout << i++ << " -> " << lst.begin() << endl;
-            lst.erase(lst.begin());
-        }
+        // while(!lst.empty()){
+        //     cout << i++ << " -> " << lst.begin() << endl;
+        //     lst.erase(lst.begin());
+        // }
+
+        lst.clear();
 
         cout << "Size: " << lst.size() << endl;
 
