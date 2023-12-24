@@ -63,10 +63,10 @@ int main()
 
     // Гененрируем начальное распределение монстров
     std::cout << "Generating ..." << std::endl;
-    for (size_t i = 0; i < 10; ++i)
+    for (size_t i = 0; i < 300; ++i)
         array.insert(factory(NpcType(std::rand() % 3 + 1),
-                             std::rand() % 100,
-                             std::rand() % 100));
+                             std::rand() % 500,
+                             std::rand() % 500));
     std::cout << "Saving ..." << std::endl;
 
     save(array, "npc.txt");
@@ -74,10 +74,10 @@ int main()
     std::cout << "Loading ..." << std::endl;
     array = load("npc.txt");
 
-    std::cout << "Fighting ..." << std::endl
+    std::cout << "Fighting ...\n" << std::endl
               << array;
 
-    for (size_t distance = 20; (distance <= 100) && !array.empty(); distance += 10)
+    for (size_t distance = 0; (distance <= 500) && !array.empty(); distance += 10)
     {
         auto dead_list = fight(array, distance);
         for (auto &d : dead_list)
@@ -89,7 +89,7 @@ int main()
 
     }
 
-    std::cout << "Survivors: " << array;
+    std::cout << "Survivors: \n" << array;
 
     return 0;
 }
