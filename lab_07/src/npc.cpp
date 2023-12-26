@@ -66,6 +66,23 @@ std::ostream &operator<<(std::ostream &os, NPC &npc)
 void NPC::move(int shift_x, int shift_y, int max_x, int max_y)
 {
     std::lock_guard<std::mutex> lck(mtx);
+    int move_distance = 0;
+
+    if (this -> type == DragonType){
+        move_distance = 50;
+    } else if (this -> type == ElfType){
+        move_distance = 10;
+    } else if (this -> type == DruidType){
+        move_distance = 10;
+    }
+
+    if (shift_y % 2 == 0) {
+        shift_x = move_distance * pow(-1, shift_x);
+        shift_y = move_distance * pow(-1, shift_y);
+    } else {
+        shift_x = move_distance * pow(-1, shift_x);
+        shift_y = move_distance * pow(-1, shift_y);
+    }
 
     if ((x + shift_x >= 0) && (x + shift_x <= max_x))
         x += shift_x;

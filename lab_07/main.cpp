@@ -48,7 +48,7 @@ set_t load(const std::string &filename)
 std::ostream &operator<<(std::ostream &os, const set_t &array)
 {
     for (auto &n : array)
-        n->print();
+        if(n->is_alive()) n->print();
     return os;
 }
 
@@ -140,13 +140,13 @@ int main()
 {
     set_t array; // монстры
 
-    const int MAX_X{500};
-    const int MAX_Y{500};
+    const int MAX_X{100};
+    const int MAX_Y{100};
     const int DISTANCE{40};
 
     // Гененрируем начальное распределение монстров
     std::cout << "Generating ..." << std::endl;
-    for (size_t i = 0; i < 100; ++i)
+    for (size_t i = 0; i < 50; ++i)
         array.insert(factory(NpcType(std::rand() % 3 + 1),
                              std::rand() % MAX_X,
                              std::rand() % MAX_Y));
@@ -156,8 +156,7 @@ int main()
 
     std::thread fight_thread(std::ref(FightManager::get()));
 
-    int cnt;
-    std::thread move_thread([&array, &cnt]()
+    std::thread move_thread([&array]()
                             {
             while (flag)
             {
@@ -180,16 +179,14 @@ int main()
                                 FightManager::get().add_event({npc, other});
 
                 std::this_thread::sleep_for(50ms);
-                cnt++;
             } });
 
-    int start = 0, end = 50;
+    int start = 0, end = 30; //Time of fighting
     while (start < end)
     {
         const int grid{20}, step_x{MAX_X / grid}, step_y{MAX_Y / grid};
         {
             std::array<char, grid * grid> fields{0};
-            int cnt = 0;
             std::shared_ptr<NPC> pos_win;
             for (std::shared_ptr<NPC> npc : array)
             {
@@ -199,7 +196,6 @@ int main()
 
                 if (npc->is_alive())
                 {
-                    pos_win = npc;
                     switch (npc->get_type())
                     {
                     case DragonType:
@@ -219,10 +215,6 @@ int main()
                 else{
                     fields[i + grid * j] = '.';
                 }
-            }
-            if(cnt == array.size() - 1){
-                std::cout << "\n---Winner---\n" << pos_win << std::endl;
-                break;
             }
 
             std::lock_guard<std::mutex> lck(print_mutex);
@@ -247,6 +239,9 @@ int main()
     flag = false;
     move_thread.join();
     fight_thread.join();
+
+    std::cout << "\n---Monsters survived (on map W - druid, D - dragon, E - elf)---\n" << std::endl;
+    std::cout << array << std::endl;
 
     return 0;
 }
